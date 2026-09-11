@@ -199,11 +199,12 @@ READY+VALID 且 FAIL 未置位后：BKP1=`0x3344` → 消费为 `0xAABB` 进 OTA
 
 ## 10. 仍未确认的事实（开放项）
 
-1. **SPI 引脚**（CS/SCK/MOSI/MISO 等）— 待原理图确认后写入 `board_gt32.h`；**不得编造**  
-2. **确切 Keil（或 GCC）工程路径与构建命令** — 待工程确认；源码仓库路径（含 CardReaderBootLoader-v0.3.1 移植源）同样待确认  
-3. **实板 Secondary 128 KiB 预擦墙钟时长** — 决定发送端「头 ACK 后等 C」是否维持默认 30 s（AC-YM-05 登记）；超限则设计变更上调发送端等待，不得静默改协议  
+1. **确切 Keil（或 GCC）工程路径与构建命令** — 待工程确认；源码仓库路径（含 CardReaderBootLoader-v0.3.1 移植源）同样待确认  
+2. **实板 Secondary 128 KiB 预擦墙钟时长** — 决定发送端「头 ACK 后等 C」是否维持默认 30 s（AC-YM-05 登记）；超限则设计变更上调发送端等待，不得静默改协议  
 
 **已关闭（R02.1）：** 板卡从 **v0.1** 起；手册引用（GT32 VER1.0I_N；GD32 截至 2026-09-11 最新版）；Modbus FC **明确不做**（改为 AppOta API）；LastGood 向量判定；Boot 栈/`static` DMA；Meta CRC 升序喂入；GT32 WIP 超时；移植非重写策略。  
+
+**已关闭（SPI 引脚，2026-09-12）：** 来源 **用户确认**。SPI2：SCK=`PB13`、MISO=`PB14`、MOSI=`PB15`（与屏共用）；GT32 CS=`PB9`；屏 CS=`PB12` **仅文档**（Boot **不驱动**）。已写入 `board_gt32.h`，`BOARD_GT32_PINS_CONFIRMED=1`。**引脚确认 ≠ E3**；实板读写擦与烧录仍须另授。不得再编造其它引脚。  
 
 ## 11. 方案偏离时的停止条件
 
@@ -229,7 +230,7 @@ READY+VALID 且 FAIL 未置位后：BKP1=`0x3344` → 消费为 `0xAABB` 进 OTA
 调整：
 1. 以「OTA架构官」代理日常切片放行与交付审查；「OTA实现AI」仅实施已批准切片
 2. Modbus FC 不在范围；App 使用 AppOta_RequestUpgrade/ConfirmRunning
-3. SPI 引脚与 Keil 路径未定时：允许主机侧/占位实现，实机 E3/E4 标未验证；不得编造引脚
+3. SPI 引脚已于 2026-09-12 用户确认并写入 board_gt32.h；Keil/GCC 路径仍可主机侧推进；实机 E3/E4 标未验证；禁止目标板擦写/烧录直至另授
 
 允许连续实施的切片：Slice 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8(AppOta API) → 9；每片结束向架构官交交付卡，架构官可通过后自动放行下一片（高风险偏离须暂停）
 汇报检查点：每切片结束交付卡；架构官抽检关键路径；整仓主机测试通过后汇总
