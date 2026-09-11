@@ -1,7 +1,8 @@
 /**
 @file board_gt32.c
 @brief GT32 板级 SPI 抽象：默认未就绪桩；HOST_MOCK 下记录 opcode / 用户区镜像 / WIP
-@note 引脚 UNCONFIRMED（BOARD_GT32_PINS_CONFIRMED=0）；不定义具体 GPIO 号。
+@note 引脚已确认（BOARD_GT32_PINS_CONFIRMED=1）：SPI2 PB13/14/15，GT32 CS=PB9；
+      屏 CS=PB12 仅文档，Boot 不驱动。目标板寄存器初始化仍为对接项；≠ E3。
 */
 
 #include "board_gt32.h"
