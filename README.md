@@ -18,6 +18,13 @@
 
 `BOARD_GT32_PINS_CONFIRMED=1`（不等于 E3 通过）。
 
+### 墙钟登记（用户均值 2026-09-12）
+
+- 写 1 KiB ≈ **18 ms**；擦 1 KiB ≈ **200 ms**
+- 线性外推 Secondary 128 KiB 擦 ≈ **25.6 s** → 默认头 ACK 后等 C **30 s** 仍兼容（偏紧）
+- 维持 30 s；整槽 2×D8h 实测仍建议补一次（见 `docs/ai-collab/DECISIONS.md` D-TIM-001）
+
+
 ## Backup → Secondary / LastGood 映射
 
 | ref-v031 | 本仓库（R02 GT32） |
